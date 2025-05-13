@@ -1,0 +1,14 @@
+[project]
+path = "YOUR PROJECT PATH"
+
+[huggingface]
+token = "YOUR_TOKEN"
+
+[bioportal]
+token = "YOUR_TOKEN"
+
+[openai]
+token = "YOUR_TOKEN"
+
+[wandb]
+token = "YOUR_TOKEN"
