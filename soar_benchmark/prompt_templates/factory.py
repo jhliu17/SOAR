@@ -106,9 +106,7 @@ class ZeroShotCoTRankedGeneNamesPromptTemplate(ZeroShotRankedGeneNamesPromptTemp
         return self.format_messages(slots)
 
 
-class ZeroShotRankedGeneNamesPromptTemplateForSCACT(
-    ZeroShotRankedGeneNamesPromptTemplate
-):
+class ZeroShotRankedGeneNamesPromptTemplateForSCACT(ZeroShotRankedGeneNamesPromptTemplate):
     def direct_answer_trigger_for_zeroshot(self, slots: dict[str, str]):
         return f"The most likely specific cell type in {slots['tissue']} (directly return one cell type name) is"
 
@@ -127,9 +125,7 @@ class ZeroShotRankedGeneNamesPromptTemplateForSCACT(
         return formated_messages
 
 
-class ZeroShotCoTRankedGeneNamesPromptTemplateForSCACT(
-    ZeroShotRankedGeneNamesPromptTemplate
-):
+class ZeroShotCoTRankedGeneNamesPromptTemplateForSCACT(ZeroShotRankedGeneNamesPromptTemplate):
     @property
     def cot_trigger(self):
         return "Let's think step by step."
@@ -190,9 +186,7 @@ class FewShotRankedGeneNamesPromptTemplate(ZeroShotCoTRankedGeneNamesPromptTempl
             question = f"Question: Given the following markers [{gene_names}], what is the cell type in {demo['tissue']} corresponding to these markers?"
             reasoning = demo["reasoning"]
             answer = f"In summary, the most likely cell type (one cell type name) is {demo['cell_type']}"
-            demo_messages.append(
-                f"{question}\n{self.cot_trigger}\n{reasoning}\n{answer}"
-            )
+            demo_messages.append(f"{question}\n{self.cot_trigger}\n{reasoning}\n{answer}")
 
         demo_str = "\n\n".join(demo_messages)
         formated_messages: list[dict[str, str]] = [

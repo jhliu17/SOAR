@@ -7,7 +7,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from huggingface_hub import login
 from datasets import load_dataset
 from trl import SFTConfig, SFTTrainer, DataCollatorForCompletionOnlyLM
-from src.pipeline import PipelineConfig, torch_dtype_map
+from soar_benchmark.pipeline import PipelineConfig, torch_dtype_map
 
 
 @dataclass
@@ -56,15 +56,11 @@ class TrainBase:
 
         model = AutoModelForCausalLM.from_pretrained(
             load_from_str,
-            torch_dtype=torch_dtype_map.get(
-                config.torch_dtype, torch_dtype_map["bfloat16"]
-            ),
+            torch_dtype=torch_dtype_map.get(config.torch_dtype, torch_dtype_map["bfloat16"]),
             device_map=config.device_map,
             **config.model_kwargs,
         )
-        tokenizer = AutoTokenizer.from_pretrained(
-            load_from_str, **config.tokenizer_kwargs
-        )
+        tokenizer = AutoTokenizer.from_pretrained(load_from_str, **config.tokenizer_kwargs)
 
         if save_after_init:
             model.save_pretrained(local_path)
@@ -87,9 +83,7 @@ class Cell2SentCellTypeAnnotationTrainer(TrainBase):
             return output_texts
 
         response_template = " ### Answer:"
-        collator = DataCollatorForCompletionOnlyLM(
-            response_template, tokenizer=self.tokenizer
-        )
+        collator = DataCollatorForCompletionOnlyLM(response_template, tokenizer=self.tokenizer)
 
         trainer = SFTTrainer(
             self.model,

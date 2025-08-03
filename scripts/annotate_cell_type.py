@@ -4,7 +4,7 @@ from nntool.slurm import slurm_fn
 from configs.config_cell_type_annotation import (
     DefinedCellTypeAnnotationTaskConfig,
 )
-from src.task import CellTypeAnnotationTaskConfig, CellTypeAnnotationTask
+from soar_benchmark.task import CellTypeAnnotationTaskConfig, CellTypeAnnotationTask
 
 
 @slurm_fn

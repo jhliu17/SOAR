@@ -1,4 +1,4 @@
-from src.dataset import CSVDatasetConfig
+from soar_benchmark.dataset import CSVDatasetConfig
 from .misc import project_path
 
 # datasets

@@ -9,21 +9,21 @@ from transformers import set_seed
 from nntool.slurm import SlurmConfig
 from torch.utils.data import Subset, DataLoader
 
-from src.dataset import (
+from soar_benchmark.dataset import (
     CSVDatasetConfig,
     DatasetBaseConfig,
     H5ADDataset,
     H5ADDatasetConfig,
 )
-from src.pipeline import PipelineConfig, GenerationConfig
-from src.pipeline import (
+from soar_benchmark.pipeline import PipelineConfig, GenerationConfig
+from soar_benchmark.pipeline import (
     CellTypeAnnotationPipeline,
     PipelineBase,
     Cell2SentCellTypeAnnotationPipeline,
     ChatGPTCellTypeAnnotationPipeline,
 )
-from src.dataset import CSVDataset
-from src.prompt_templates.factory import (
+from soar_benchmark.dataset import CSVDataset
+from soar_benchmark.prompt_templates.factory import (
     PromptTemplateBase,
     RankedGeneNamesPromptTemplate,
     ZeroShotRankedGeneNamesPromptTemplate,
@@ -86,13 +86,9 @@ class CellTypeAnnotationTask(TaskBase):
     def __init__(self, config: CellTypeAnnotationTaskConfig):
         super().__init__(config)
         self.config = config
-        self.gene_limit_num = (
-            config.gene_num_limit if config.gene_num_limit > 0 else None
-        )
+        self.gene_limit_num = config.gene_num_limit if config.gene_num_limit > 0 else None
 
-    def prepare_input(
-        self, batch: list[dict[str, Any]], post_batch: list[dict[str, Any]] = None
-    ):
+    def prepare_input(self, batch: list[dict[str, Any]], post_batch: list[dict[str, Any]] = None):
         prompter_name = self.config.promter_name
         prompter = prompter_cls[prompter_name]()
 
@@ -105,13 +101,9 @@ class CellTypeAnnotationTask(TaskBase):
                 )
             elif prompter_name in {"zero_shot_cot", "zero_shot_cot_scact"}:
                 kwargs = (
-                    {"reasoning": post_batch[i][0]["generated_text"][-1]["content"]}
-                    if post_batch is not None
-                    else {}
+                    {"reasoning": post_batch[i][0]["generated_text"][-1]["content"]} if post_batch is not None else {}
                 )
-                x = prompter.get_messages(
-                    sample["tissue"], sample["genes"][: self.gene_limit_num], **kwargs
-                )
+                x = prompter.get_messages(sample["tissue"], sample["genes"][: self.gene_limit_num], **kwargs)
             elif prompter_name in {
                 "few_shot",
             }:
@@ -139,9 +131,7 @@ class CellTypeAnnotationTask(TaskBase):
         return dataset
 
     def run(self, *args, **kwargs):
-        pipeline = pipeline_cls[self.config.pipeline.pipeline_class_name](
-            self.config.pipeline
-        )
+        pipeline = pipeline_cls[self.config.pipeline.pipeline_class_name](self.config.pipeline)
         dataset = self.prepare_dataset()
         dataloader = DataLoader(
             dataset,
@@ -158,9 +148,7 @@ class CellTypeAnnotationTask(TaskBase):
             if self.config.promter_name in {"zero_shot_cot", "zero_shot_cot_scact"}:
                 x = self.prepare_input(batch, responses)
                 post_responses = pipeline(x, self.config.generation)
-                pprint.pp(
-                    [(r, pr) for r, pr in zip(responses, post_responses)], width=240
-                )
+                pprint.pp([(r, pr) for r, pr in zip(responses, post_responses)], width=240)
 
                 responses = post_responses
 
@@ -175,7 +163,5 @@ class CellTypeAnnotationTask(TaskBase):
                 )
                 pprint.pp(context[-1], width=240)
 
-        with open(
-            self.output_folder / f"{self.config.pipeline.model_custom_id}.json", "w"
-        ) as f:
+        with open(self.output_folder / f"{self.config.pipeline.model_custom_id}.json", "w") as f:
             json.dump(context, f, indent=4)

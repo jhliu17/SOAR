@@ -4,13 +4,11 @@ import tyro
 
 from tqdm import tqdm
 from nntool.utils.utils_module import read_toml_file
-from src.bioontology.decode import BioOntologyDecoder, BioOntologyDecoderConfig
+from soar_benchmark.bioontology.decode import BioOntologyDecoder, BioOntologyDecoderConfig
 
 
 def mapping(
-    chat_results_path: str = (
-        "outputs/cell_type_annotation/07042024_141209/qwen2-72b-instruct.json"
-    ),
+    chat_results_path: str = ("outputs/cell_type_annotation/07042024_141209/qwen2-72b-instruct.json"),
     normalized_answers_path: str = "outputs/cell_type_annotation_analysis/datasets/sora_rna/normalized_answers.json",
     possible_label_mapping_path: str = "",
 ):

@@ -6,9 +6,7 @@ from evaluate import load
 
 
 def eval(
-    squad_eval_results_path: List[str] = [
-        "outputs/cell_type_annotation_analysis/qwen2-72b/squad_eval_inflect.json"
-    ],
+    squad_eval_results_path: List[str] = ["outputs/cell_type_annotation_analysis/qwen2-72b/squad_eval_inflect.json"],
     compute_bert_score: bool = False,
 ):
     bleu = load("bleu")
@@ -27,9 +25,7 @@ def eval(
 
     if compute_bert_score:
         bertscore = load("bertscore")
-        results = bertscore.compute(
-            predictions=predictions, references=references, lang="en"
-        )
+        results = bertscore.compute(predictions=predictions, references=references, lang="en")
         print(results)
 
     rouge = load("rouge")

@@ -3,7 +3,7 @@ from typing import Union
 import scanpy as sc
 import pandas as pd
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from torch.utils.data import Dataset
 
 
@@ -107,9 +107,7 @@ class H5ADDataset(DatasetBase):
 
         dataset = self.config.dataset_name
         tissue = self.config.tissue
-        genes = list(
-            self.adata.uns["gene_list"]["names"][cell_type][: self.config.gene_num]
-        )
+        genes = list(self.adata.uns["gene_list"]["names"][cell_type][: self.config.gene_num])
         label = (
             cell_type
             if self.config.cell_type_to_label is None
