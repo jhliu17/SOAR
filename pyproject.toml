@@ -3,7 +3,7 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "soar-benchmark"
+name = "soar_benchmark"
 dynamic = ["version"]
 description = "Single-Cell Omics Arena (SOAR) is a comprehensive benchmark framework designed to evaluate and improve the performance of instruction-tuned large language models (LLMs) in automated cell type annotation from single-cell omics data."
 readme = "readme.md"
@@ -24,6 +24,7 @@ dependencies = [
     "einops==0.8.0",
     "huggingface-hub==0.23.3",
     "transformers==4.41.2",
+    "anndata==0.10.8",
     "scanpy==1.10.2",
     "inflect==7.3.1",
     "accelerate==0.31.0",
@@ -39,7 +40,7 @@ dependencies = [
     "pandas==2.2.2",
     "tyro>=0.8.4",
     "wandb==0.17.2",
-    "nntool",
+    "nntool==1.8.0",
     "tomli==2.0.1",
     "pandas==2.2.2",
     "openai==1.35.10",
@@ -52,6 +53,7 @@ dev = ["pytest>=8.4.1", "ruff>=0.11.0"]
 
 [tool.setuptools]
 include-package-data = true
+packages = { find = { include = ["soar_benchmark*"] } }
 
 [tool.setuptools.dynamic]
 version = { attr = "soar_benchmark.version.VERSION" }

@@ -8,7 +8,7 @@ from huggingface_hub import login
 from transformers import pipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from dataclasses import asdict, dataclass, field
-from typing import Dict, Literal
+from typing import Any, Dict, Literal
 from openai import OpenAI
 
 
@@ -30,8 +30,8 @@ class PipelineConfig:
     device_map: str = "auto"
     pipeline_name: str = "text-generation"
     batch_size: int = 8
-    model_kwargs: Dict[str, str] = field(default_factory=dict)
-    tokenizer_kwargs: Dict[str, str] = field(default_factory=dict)
+    model_kwargs: Dict[str, Any] = field(default_factory=dict)
+    tokenizer_kwargs: Dict[str, Any] = field(default_factory=dict)
     huggingface_token: str = ""
     openai_token: str = ""
     pipeline_class_name: str = "CellTypeAnnotationPipeline"

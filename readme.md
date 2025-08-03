@@ -18,12 +18,11 @@ Single-Cell Omics Arena (SOAR) is a comprehensive benchmark framework designed t
     - [RNA-seq](#rna-seq)
     - [ATAC-seq](#atac-seq)
 
-## Setup
+## Installation
 
-Create an environment configuration file (`env.toml`) based on the provided template `env_sample.toml`
-
-Install dependencies via `pip install -r requirements.txt`
-
+1. Create an environment with Python >= 3.11
+2. Clone the repo via `git clone git@github.com:jhliu17/SOAR.git`
+3. Install `soar_benchmark` via `pip install -e .`
 
 ## Cell Type Annotation with LLMs
 
