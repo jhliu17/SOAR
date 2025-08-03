@@ -26,6 +26,8 @@ Single-Cell Omics Arena (SOAR) is a comprehensive benchmark framework designed t
 
 ## Cell Type Annotation with LLMs
 
+### Annotation Interface
+
 To print out all supported LLMs, please run:
 
 ```bash

@@ -38,7 +38,7 @@ dependencies = [
     "numpy==1.26.3",
     "scipy==1.14.0",
     "pandas==2.2.2",
-    "tyro>=0.8.4",
+    "tyro>=0.9.27",
     "wandb==0.17.2",
     "nntool==1.8.0",
     "tomli==2.0.1",
@@ -50,6 +50,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.4.1", "ruff>=0.11.0"]
+
+[project.scripts]
+soar = "soar_benchmark.cli:main"
 
 [tool.setuptools]
 include-package-data = true
