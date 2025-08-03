@@ -1,0 +1,9 @@
+soar_benchmark/datasets/soar_rna.json filter=lfs diff=lfs merge=lfs -text
+soar_benchmark/datasets/brain_cell_type_annotation.h5ad filter=lfs diff=lfs merge=lfs -text
+soar_benchmark/datasets/pbmc_gene_score_cell_type_annotation.h5ad filter=lfs diff=lfs merge=lfs -text
+soar_benchmark/datasets/pbmc_label_mappings.json filter=lfs diff=lfs merge=lfs -text
+soar_benchmark/datasets/pbmc_translation_cell_type_annotation.h5ad filter=lfs diff=lfs merge=lfs -text
+soar_benchmark/datasets/brain_gene_score_cell_type_annotation.h5ad filter=lfs diff=lfs merge=lfs -text
+soar_benchmark/datasets/brain_label_mappings.json filter=lfs diff=lfs merge=lfs -text
+soar_benchmark/datasets/brain_translation_cell_type_annotation.h5ad filter=lfs diff=lfs merge=lfs -text
+soar_benchmark/datasets/pbmc_cell_type_annotation.h5ad filter=lfs diff=lfs merge=lfs -text
