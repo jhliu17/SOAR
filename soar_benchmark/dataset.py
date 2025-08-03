@@ -9,7 +9,6 @@ from torch.utils.data import Dataset
 
 @dataclass
 class DatasetBaseConfig:
-    csv_path: str = ""
     demo_path: str = ""
     use_demo: bool = False
 
@@ -37,30 +36,30 @@ class DatasetBase(Dataset):
 
 
 @dataclass
-class CSVDatasetConfig(DatasetBaseConfig):
-    pass
+class JSONDatasetConfig(DatasetBaseConfig):
+    json_path: str = ""
 
 
-class CSVDataset(DatasetBase):
+class JSONDataset(DatasetBase):
     def __init__(
         self,
-        config: CSVDatasetConfig,
+        config: JSONDatasetConfig,
     ):
         super().__init__(config)
-        self.df = pd.read_csv(config.csv_path)
+        self.df = pd.read_json(config.json_path)
 
     def __len__(self):
         return len(self.df)
 
     def get_sample(self, index):
         row = self.df.iloc[index]
-        dataset = row["dataset"]
+        dataset = row["subset"]
         tissue = row["tissue"]
-        genes = [i.strip() for i in row["marker"].split(",")]
-        label = row["manual annotation"]
-        label_cl = row["manual CLname"]
-        label_id = row["manual CLID"]
-        broadtype = row["manual broadtype"]
+        genes = [i.strip() for i in row["gene list"].split(",")]
+        label = row["annotation"]
+        label_cl = row["cl_name"]
+        label_id = row["cl_id"]
+        broadtype = row["broadtype"]
 
         sample = {
             "index": index,

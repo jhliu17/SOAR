@@ -1,7 +1,7 @@
-from soar_benchmark.dataset import CSVDatasetConfig
+from soar_benchmark.dataset import JSONDatasetConfig
 from .misc import project_path
 
 # datasets
-soar_rna_0shot_dataset = CSVDatasetConfig(
-    f"{project_path}/datasets/soar_rna/data.csv",
+soar_rna_0shot_dataset = JSONDatasetConfig(
+    json_path=f"{project_path}/datasets/soar_rna.json",
 )

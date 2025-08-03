@@ -4,7 +4,7 @@ from nntool.slurm import slurm_fn
 from .configs.config_cell_type_annotation import (
     DefinedCellTypeAnnotationTaskConfig,
 )
-from soar_benchmark.dataset import CSVDatasetConfig
+from soar_benchmark.dataset import JSONDatasetConfig
 from soar_benchmark.task import CellTypeAnnotationTaskConfig, CellTypeAnnotationTask
 
 app = SubcommandApp()
@@ -23,7 +23,7 @@ def experiment(config: DefinedCellTypeAnnotationTaskConfig):
 
 
 @app.command
-def annotate(config: DefinedCellTypeAnnotationTaskConfig, dataset: CSVDatasetConfig):
+def annotate(config: DefinedCellTypeAnnotationTaskConfig, dataset: JSONDatasetConfig):
     config: CellTypeAnnotationTaskConfig
     config = replace(config, dataset=dataset)
     run[config.slurm](config)

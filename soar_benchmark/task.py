@@ -10,7 +10,7 @@ from nntool.slurm import SlurmConfig
 from torch.utils.data import Subset, DataLoader
 
 from soar_benchmark.dataset import (
-    CSVDatasetConfig,
+    JSONDatasetConfig,
     DatasetBaseConfig,
     H5ADDataset,
     H5ADDatasetConfig,
@@ -22,7 +22,7 @@ from soar_benchmark.pipeline import (
     Cell2SentCellTypeAnnotationPipeline,
     ChatGPTCellTypeAnnotationPipeline,
 )
-from soar_benchmark.dataset import CSVDataset
+from soar_benchmark.dataset import JSONDataset
 from soar_benchmark.prompt_templates.factory import (
     PromptTemplateBase,
     RankedGeneNamesPromptTemplate,
@@ -120,8 +120,8 @@ class CellTypeAnnotationTask(TaskBase):
 
     def prepare_dataset(self):
         dataset = None
-        if isinstance(self.config.dataset, CSVDatasetConfig):
-            dataset = CSVDataset(self.config.dataset)
+        if isinstance(self.config.dataset, JSONDatasetConfig):
+            dataset = JSONDataset(self.config.dataset)
         elif isinstance(self.config.dataset, H5ADDatasetConfig):
             dataset = H5ADDataset(self.config.dataset)
         else:
