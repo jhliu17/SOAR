@@ -45,6 +45,12 @@ Each model has specific hardware requirements and configurations:
 - Larger models (70B-72B): Multi-GPU setup with 4-8 GPUs
 - Mixtral-8x7B: 4 GPUs recommended for optimal performance
 
+For example, to reproduce the SOAR-RNA benchmark result on GPT-4o using zero-shot prompting, one can run
+
+```bash
+soar annotate soar_rna_with_gpt4_o_zero_shot
+```
+
 ### Custom Dataset
 
 If one would like to leverage a provided LLM annotation configuration to annotate their own dataset, this can be achieved
