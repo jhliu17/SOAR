@@ -4,25 +4,19 @@ Single-Cell Omics Arena (SOAR) is a comprehensive benchmark framework designed t
 
 ## Updates
 
+- **[2025-08-03]** 🎉 We are excited to provide a command line interface and the pre-built package `soar_benchmark` for easier usages.
 - **[2025-05-12]** 🎉 We are excited to announce that Single-Cell Omics Arena (SOAR) is now open-source! We welcome contributions from the community to help advance automated cell type annotation using LLMs.
-
-## Table of Contents
-
-- [Single-Cell Omics Arena](#-single-cell-omics-arena)
-  - [Generate Cell Type Annotation](#generate-cell-type-annotation)
-  - [Metrics](#metrics)
-  - [SOAR-RNA Benchmark](#soar-rna-benchmark)
-    - [Zero-shot Cell Type Annotation](#zero-shot-cell-type-annotation)
-    - [Zero-shot Chain-of-thought Cell Type Annotation](#zero-shot-chain-of-thought-cell-type-annotation)
-  - [SOAR-MultiOmics Benchmark](#soar-multiomics-benchmark)
-    - [RNA-seq](#rna-seq)
-    - [ATAC-seq](#atac-seq)
 
 ## Installation
 
 1. Create an environment with Python >= 3.11
 2. Clone the repo via `git clone git@github.com:jhliu17/SOAR.git`
 3. Install `soar_benchmark` via `pip install -e .`
+
+## API Key Setup
+
+To execute LLMs provided by OpenAI or hosted on Hugging Face Transformers, an env file (`env.toml`) should be set up in the
+project folder. A template env file is provided as `env_sample.toml`.
 
 ## Cell Type Annotation with LLMs
 
@@ -31,27 +25,67 @@ Single-Cell Omics Arena (SOAR) is a comprehensive benchmark framework designed t
 To print out all supported LLMs, please run:
 
 ```bash
-python -m scripts.annotate_cell_type -h
+soar annotate -h
 ```
 
-SOAR currently supports the following LLMs for cell type annotation:
+This will print out all available annotation options using LLMs.
+
+`soar` currently supports the following LLMs for cell type annotation:
 
 - Qwen2 series (1.5B, 7B, 72B)
 - Meta Llama-3 70B
 - Mixtral-8x7B
-- ChatGPT-4o and 4o mini
+- GPT-4o
+- GPT-4o-mini
+
+where all LLMs can leverage zero-shot prompting or zero-shot chain-of-thought prompting to finish cell type annotations.
 
 Each model has specific hardware requirements and configurations:
 - Smaller models (1.5B-7B): Single GPU with 16GB VRAM
 - Larger models (70B-72B): Multi-GPU setup with 4-8 GPUs
 - Mixtral-8x7B: 4 GPUs recommended for optimal performance
 
-For detailed configuration settings including batch sizes, memory requirements, and hardware specifications, please refer to:
-- Model configs: `configs/cell_type_annotation/experiment_soar_rna.py`
-- Hardware configs: `configs/cell_type_annotation/slurm.py`
+### Custom Dataset
+
+If one would like to leverage a provided LLM annotation configuration to annotate their own dataset, this can be achieved
+by
+
+```bash
+soar annotate soar_rna_with_gpt4_o_zero_shot --config.dataset.json-path YOUR_DATASET_PATH
+```
+where the custom dataset should follow the same structure as `soar_benchmark/datasets/soar_rna.json`.
+
+One can further fine-tune the preset configuration by overriding some arguments. For example, increasing the new token
+ number limit to 2048.
+
+```bash
+soar annotate soar_rna_with_gpt4_o_zero_shot --config.generation.max-new-tokens 2048
+
+# To see more tunable options
+soar annotate soar_rna_with_gpt4_o_zero_shot -h
+```
+
+### Custom LLM Configuration
+
+If you would like to implement a custom annotation configuration. Please refer to the detailed configuration settings including batch sizes, memory requirements, and hardware specifications in:
+- Model configs: `soar_benchmark/configs/cell_type_annotation/experiment_soar_rna.py`
+
+Once you have implemented a custom configuration, you can use it by calling the built-in annotation function
+
+```python
+from soar_benchmark import start_annotation_task
+
+# Your custom configuration
+custom_configuration = CellTypeAnnotationTaskConfig(...)
+
+# Start annotation
+start_annotation_task(custom_configuration)
+```
 
 
 ## Evaluations
+
+To run evaluations on annotated results, please refer to
 
 ```bash
 python -m analysis.cell_type_annotation.squad_eval --chat_results_path outputs/.../qwen2-72b-instruct.json --squad_eval_results_path outputs/.../few_shot_squad_eval_inflect.json
