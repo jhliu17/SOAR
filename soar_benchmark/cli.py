@@ -17,15 +17,7 @@ def run(config: CellTypeAnnotationTaskConfig):
 
 
 @app.command
-def experiment(config: DefinedCellTypeAnnotationTaskConfig):
-    config: CellTypeAnnotationTaskConfig
-    run[config.slurm](config)
-
-
-@app.command
-def annotate(config: DefinedCellTypeAnnotationTaskConfig, dataset: JSONDatasetConfig):
-    config: CellTypeAnnotationTaskConfig
-    config = replace(config, dataset=dataset)
+def annotate(config: DefinedCellTypeAnnotationTaskConfig):
     run[config.slurm](config)
 
 
