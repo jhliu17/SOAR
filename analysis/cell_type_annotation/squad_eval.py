@@ -9,13 +9,9 @@ from analysis.cell_type_annotation.answer_cleansing import clean_answer
 
 
 def eval(
-    chat_results_path: str = (
-        "outputs/cell_type_annotation/07042024_141209/qwen2-72b-instruct.json"
-    ),
+    chat_results_path: str = ("outputs/cell_type_annotation/07042024_141209/qwen2-72b-instruct.json"),
     normalized_answers_path: str = "outputs/cell_type_annotation_analysis/datasets/sora_rna/normalized_answers.json",
-    squad_eval_results_path: str = (
-        "outputs/cell_type_annotation_analysis/qwen2-72b/squad_eval_inflect.json"
-    ),
+    squad_eval_results_path: str = ("outputs/cell_type_annotation_analysis/qwen2-72b/squad_eval_inflect.json"),
     instruction_prefix: str = "",
     instruction_prefix_group_index: int = 0,
     instruction_model: str = "",
@@ -76,9 +72,7 @@ def eval(
 
         print()
         print(dataset, len(sub_predictions), len(sub_references))
-        results = squad_metric.compute(
-            predictions=sub_predictions, references=sub_references
-        )
+        results = squad_metric.compute(predictions=sub_predictions, references=sub_references)
         print(dataset, results)
 
 

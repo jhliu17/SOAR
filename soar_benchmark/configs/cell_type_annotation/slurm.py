@@ -3,9 +3,9 @@ from .misc import output_folder
 
 single_gpu_slurm_config = SlurmConfig(
     mode="slurm",
-    slurm_job_name="chat",
-    slurm_partition="zhanglab.p",
-    slurm_output_folder=f"{output_folder}/slurm",
+    job_name="chat",
+    partition="zhanglab.p",
+    output_folder=f"{output_folder}/slurm",
     node_list="laniakea",
     cpus_per_task=4,
     gpus_per_task=1,
@@ -16,9 +16,9 @@ single_gpu_slurm_config = SlurmConfig(
 
 slurm_config = SlurmConfig(
     mode="slurm",
-    slurm_job_name="chat",
-    slurm_partition="zhanglab.p",
-    slurm_output_folder=f"{output_folder}/slurm",
+    job_name="chat",
+    partition="zhanglab.p",
+    output_folder=f"{output_folder}/slurm",
     node_list="laniakea",
     cpus_per_task=4,
     gpus_per_task=4,
@@ -29,9 +29,9 @@ slurm_config = SlurmConfig(
 
 large_slurm_config = SlurmConfig(
     mode="slurm",
-    slurm_job_name="chat",
-    slurm_partition="zhanglab.p",
-    slurm_output_folder=f"{output_folder}/slurm",
+    job_name="chat",
+    partition="zhanglab.p",
+    output_folder=f"{output_folder}/slurm",
     node_list="laniakea",
     cpus_per_task=8,
     gpus_per_task=8,
@@ -42,9 +42,9 @@ large_slurm_config = SlurmConfig(
 
 cpu_slurm_config = SlurmConfig(
     mode="slurm",
-    slurm_job_name="chat",
-    slurm_partition="zhanglab.p",
-    slurm_output_folder=f"{output_folder}/slurm",
+    job_name="chat",
+    partition="zhanglab.p",
+    output_folder=f"{output_folder}/slurm",
     node_list="laniakea",
     cpus_per_task=1,
     gpus_per_task=0,

@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "soar_benchmark"
+dynamic = ["version"]
+description = "Single-Cell Omics Arena (SOAR) is a comprehensive benchmark framework designed to evaluate and improve the performance of instruction-tuned large language models (LLMs) in automated cell type annotation from single-cell omics data."
+readme = "readme.md"
+requires-python = ">=3.11"
+license = "GPL-3.0-only"
+authors = [{ name = "Junhao Liu", email = "junhaoliu17@gmail.com" }]
+keywords = ["soar", "benchmark", "single-cell", "genomics"]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "torch==2.3.1",
+    "flash-attn==2.5.9.post1",
+    "einops==0.8.0",
+    "huggingface-hub==0.23.3",
+    "transformers==4.41.2",
+    "anndata==0.10.8",
+    "scanpy==1.10.2",
+    "inflect==7.3.1",
+    "accelerate==0.31.0",
+    "bitsandbytes==0.43.1",
+    "sentencepiece==0.2.0",
+    "tokenizers==0.19.1",
+    "safetensors==0.4.3",
+    "trl==0.9.6",
+    "evaluate==0.4.2",
+    "tqdm==4.66.4",
+    "numpy==1.26.3",
+    "scipy==1.14.0",
+    "pandas==2.2.2",
+    "tyro>=0.9.27",
+    "wandb==0.17.2",
+    "nntool==1.8.0",
+    "tomli==2.0.1",
+    "pandas==2.2.2",
+    "openai==1.35.10",
+    "ontobio==2.9.1",
+    "thefuzz==0.22.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.4.1", "ruff>=0.11.0"]
+
+[project.scripts]
+soar = "soar_benchmark.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+packages = { find = { include = ["soar_benchmark*"] } }
+
+[tool.setuptools.dynamic]
+version = { attr = "soar_benchmark.version.VERSION" }
+
+[tool.ruff]
+# Specify the Python version you're targeting
+target-version = "py311"
+
+# Set the maximum line length
+line-length = 120
+
+# Enable auto-fixing for specific rule categories
+fix = true
+
+# Directories to include/exclude
+include = ["*.py", "*.pyi", "**/pyproject.toml"]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "*.ipynb",        # Exclude notebooks from ruff checks
+]
+
+[tool.ruff.lint]
+ignore = ["F405", "F403", "E741", "E712"]

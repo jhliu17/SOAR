@@ -74,24 +74,16 @@ def eval(
     print("All SQUAD")
     print(squad_results)
 
-    bleu_predictions, bleu_references = map_squad_predref2bleu_predref(
-        predictions, references
-    )
-    bleu_results = bleu_metric.compute(
-        predictions=bleu_predictions, references=bleu_references, max_order=2
-    )
+    bleu_predictions, bleu_references = map_squad_predref2bleu_predref(predictions, references)
+    bleu_results = bleu_metric.compute(predictions=bleu_predictions, references=bleu_references, max_order=2)
     print("All BLEU")
     print(bleu_results)
 
-    rouge_results = rouge.compute(
-        predictions=bleu_predictions, references=bleu_references
-    )
+    rouge_results = rouge.compute(predictions=bleu_predictions, references=bleu_references)
     print("All Rouge")
     print(rouge_results)
 
-    meteor_results = meteor.compute(
-        predictions=bleu_predictions, references=bleu_references
-    )
+    meteor_results = meteor.compute(predictions=bleu_predictions, references=bleu_references)
     print("All Meteor")
     print(meteor_results)
 
@@ -114,22 +106,16 @@ def eval(
 
             for total_problem_id in total_problem_ids:
                 sub_predictions.append(id2prediction[total_problem_id])
-                sub_references.append(
-                    id2normalized_answers[total_problem_id]["normalized_answers"]
-                )
+                sub_references.append(id2normalized_answers[total_problem_id]["normalized_answers"])
 
             print()
             print(group_name, len(sub_predictions), len(sub_references))
             print("squad")
-            squad_results = squad_metric.compute(
-                predictions=sub_predictions, references=sub_references
-            )
+            squad_results = squad_metric.compute(predictions=sub_predictions, references=sub_references)
             print(group_name, squad_results)
 
             print("bleu")
-            bleu_sub_predictions, bleu_sub_references = map_squad_predref2bleu_predref(
-                sub_predictions, sub_references
-            )
+            bleu_sub_predictions, bleu_sub_references = map_squad_predref2bleu_predref(sub_predictions, sub_references)
             bleu_results = bleu_metric.compute(
                 predictions=bleu_sub_predictions,
                 references=bleu_sub_references,

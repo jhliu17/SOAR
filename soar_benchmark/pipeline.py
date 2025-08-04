@@ -8,7 +8,7 @@ from huggingface_hub import login
 from transformers import pipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from dataclasses import asdict, dataclass, field
-from typing import Dict, Literal
+from typing import Any, Dict, Literal
 from openai import OpenAI
 
 
@@ -30,8 +30,8 @@ class PipelineConfig:
     device_map: str = "auto"
     pipeline_name: str = "text-generation"
     batch_size: int = 8
-    model_kwargs: Dict[str, str] = field(default_factory=dict)
-    tokenizer_kwargs: Dict[str, str] = field(default_factory=dict)
+    model_kwargs: Dict[str, Any] = field(default_factory=dict)
+    tokenizer_kwargs: Dict[str, Any] = field(default_factory=dict)
     huggingface_token: str = ""
     openai_token: str = ""
     pipeline_class_name: str = "CellTypeAnnotationPipeline"
@@ -115,24 +115,18 @@ class PipelineBase:
 
         model = AutoModelForCausalLM.from_pretrained(
             load_from_str,
-            torch_dtype=torch_dtype_map.get(
-                config.torch_dtype, torch_dtype_map["bfloat16"]
-            ),
+            torch_dtype=torch_dtype_map.get(config.torch_dtype, torch_dtype_map["bfloat16"]),
             device_map=config.device_map,
             **config.model_kwargs,
         )
-        tokenizer = AutoTokenizer.from_pretrained(
-            load_from_str, **config.tokenizer_kwargs
-        )
+        tokenizer = AutoTokenizer.from_pretrained(load_from_str, **config.tokenizer_kwargs)
 
         if save_after_init:
             model.save_pretrained(local_path)
             tokenizer.save_pretrained(local_path)
         return model, tokenizer
 
-    def __call__(
-        self, messages: list[dict[str, str]], generation_config: GenerationConfig
-    ) -> dict:
+    def __call__(self, messages: list[dict[str, str]], generation_config: GenerationConfig) -> dict:
         # additional kwargs
         pipeline_kwargs = {}
         if "Meta-Llama-3" in self.config.model_name:
@@ -181,9 +175,7 @@ class ChatGPTCellTypeAnnotationPipeline(PipelineBase):
     def prepare_pipeline(self, config: PipelineConfig, model, tokenizer):
         return None
 
-    def __call__(
-        self, messages: list[dict[str, str]], generation_config: GenerationConfig
-    ) -> dict:
+    def __call__(self, messages: list[dict[str, str]], generation_config: GenerationConfig) -> dict:
         generated = []
         for message in messages:
             output_dict = self.decode(
@@ -196,9 +188,7 @@ class ChatGPTCellTypeAnnotationPipeline(PipelineBase):
 
             # outputs
             outputs = [{"generated_text": message.copy()}]
-            outputs[0]["generated_text"].append(
-                {"role": "assistant", "content": output_dict.content}
-            )
+            outputs[0]["generated_text"].append({"role": "assistant", "content": output_dict.content})
 
             generated.append(outputs)
 
@@ -261,21 +251,13 @@ class Cell2SentCellTypeAnnotationPipeline(CellTypeAnnotationPipeline):
 
         # for cell2sent, we use customly fintuned model. However, the tokenizer is loaded from the huggingface model.
         model = AutoModelForCausalLM.from_pretrained(
-            (
-                config.local_finetuned_ckpt_path
-                if config.local_finetuned_ckpt_path
-                else load_from_str
-            ),
-            torch_dtype=torch_dtype_map.get(
-                config.torch_dtype, torch_dtype_map["bfloat16"]
-            ),
+            (config.local_finetuned_ckpt_path if config.local_finetuned_ckpt_path else load_from_str),
+            torch_dtype=torch_dtype_map.get(config.torch_dtype, torch_dtype_map["bfloat16"]),
             device_map=config.device_map,
             attn_implementation="flash_attention_2",
             **config.model_kwargs,
         )
-        tokenizer = AutoTokenizer.from_pretrained(
-            load_from_str, **config.tokenizer_kwargs
-        )
+        tokenizer = AutoTokenizer.from_pretrained(load_from_str, **config.tokenizer_kwargs)
 
         if save_after_init:
             model.save_pretrained(local_path)
@@ -318,9 +300,7 @@ class Cell2SentCellTypeAnnotationPipeline(CellTypeAnnotationPipeline):
         )  # return newly generated tokens only
         return output_text
 
-    def __call__(
-        self, messages: list[dict[str, str]], generation_config: GenerationConfig
-    ) -> dict:
+    def __call__(self, messages: list[dict[str, str]], generation_config: GenerationConfig) -> dict:
         generated = []
         for message in messages:
             ctp = self.prepare_cellsentence(message)
@@ -328,9 +308,7 @@ class Cell2SentCellTypeAnnotationPipeline(CellTypeAnnotationPipeline):
 
             # outputs
             outputs = [{"generated_text": message.copy()}]
-            outputs[0]["generated_text"].append(
-                {"role": "assistant", "content": output_text}
-            )
+            outputs[0]["generated_text"].append({"role": "assistant", "content": output_text})
 
             generated.append(outputs)
 

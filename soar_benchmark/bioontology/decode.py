@@ -45,16 +45,12 @@ class BioOntologyDecoder:
         for result in top_search_results:
             parents_result = []
             if "parents" in result["links"]:
-                parents_result = get_json(
-                    result["links"]["parents"], API_KEY=self.api_key
-                )
+                parents_result = get_json(result["links"]["parents"], API_KEY=self.api_key)
             top_results.append({"result": result, "parents": parents_result})
 
         return top_results
 
-    def decode(
-        self, cell_list: List[str], top_k: int = 1, *args, **kwargs
-    ) -> List[List[dict[str, str]]]:
+    def decode(self, cell_list: List[str], top_k: int = 1, *args, **kwargs) -> List[List[dict[str, str]]]:
         results = []
         for cell in cell_list:
             time.sleep(self.config.time_interval)
@@ -62,9 +58,7 @@ class BioOntologyDecoder:
 
         return results
 
-    def decode_one(
-        self, cell: str, top_k: int = 1, *args, **kwargs
-    ) -> List[dict[str, str]]:
+    def decode_one(self, cell: str, top_k: int = 1, *args, **kwargs) -> List[dict[str, str]]:
         top_results = self.query_cell(cell, top_k=top_k)
         decoded_results = []
 

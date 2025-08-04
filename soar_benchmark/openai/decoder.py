@@ -37,7 +37,6 @@ class Decoder:
 
     # Sentence Generator (Decoder) for GPT-3 ...
     def decoder_for_gpt3(self, args, input, max_length, i, k):
-
         # GPT-3 API allows each users execute the API within 60 times in a minute ...
         # time.sleep(1)
         time.sleep(args.api_time_interval)

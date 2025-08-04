@@ -1,5 +1,5 @@
-from src.task import CellTypeAnnotationTaskConfig
-from src.pipeline import PipelineConfig, GenerationConfig
+from soar_benchmark.task import CellTypeAnnotationTaskConfig
+from soar_benchmark.pipeline import PipelineConfig, GenerationConfig
 from .dataset import (
     soar_rna_0shot_dataset,
 )

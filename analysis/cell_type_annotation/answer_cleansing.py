@@ -7,8 +7,6 @@ import inflect
 from urllib.parse import quote
 from pprint import pprint
 from nntool.utils import read_toml_file
-from analysis.cell_type_annotation.answer_samples import samples
-from analysis.cell_type_annotation.ontobio_cell_type import map_cell_name_to_cl_name
 
 
 def to_singular(text: str):
@@ -19,9 +17,7 @@ def to_singular(text: str):
     words = text.split()
 
     # Convert each word to its singular form if possible
-    singular_words = [
-        p.singular_noun(word) if p.singular_noun(word) else word for word in words
-    ]
+    singular_words = [p.singular_noun(word) if p.singular_noun(word) else word for word in words]
 
     # Join the words back into a single string
     result = " ".join(singular_words)
